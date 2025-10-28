@@ -4,4 +4,5 @@
 // Constructor
 TraceParser::TraceParser(std::string& filename) {
     // Attempt to open the binary file
+    
 }
