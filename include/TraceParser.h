@@ -25,7 +25,7 @@ is critical because as I read the contents of the trace file, I need the
 memory footprint of each instruction to be exactly aligned to 64 bytes
 for proper interpretation.
 */
-#pragma pack(1)
+#pragma pack(push, 1)
 struct TraceInstruction {
     // Define Format of a CRC-2 Trace Instruction
     // Format taken directly from https://gitlab.ethz.ch/rahbera/champsim/-/blob/master/tracer/champsim_tracer.cpp
