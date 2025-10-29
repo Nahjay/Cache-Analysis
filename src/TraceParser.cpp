@@ -34,6 +34,8 @@ bool TraceParser::readInstruction(TraceInstruction& instruction) {
 std::vector<uint64_t> TraceParser::extractAddresses(const TraceInstruction& instruction) {
     // Create a return vector
     std::vector<uint64_t> addresses;
+    // Explicity set size to 6 for address vector (at most 2 + 4 address processed at a time)
+    addresses.reserve(6);
 
     // I need to iterate through both fields of the instruction
     // that contain memory addresses. If the address field is non
