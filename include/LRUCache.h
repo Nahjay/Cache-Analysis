@@ -4,6 +4,7 @@
 #include <list>
 #include <unordered_map>
 #include <cstdint>
+#include <cstddef>
 
 // Define LRUCache Class
 class LRUCache {
@@ -22,9 +23,9 @@ class LRUCache {
         // Cache Relevant Metrics
         int capacity;
         // Value was found inside the cache
-        int hits;
+        int hits = 0;
         // Value was not found inside the cache
-        int misses;
+        int misses = 0;
     public:
         // Public Methods and Attributes
 
