@@ -36,6 +36,7 @@ class LRUCache {
         int getCapacity() const;
         int getHits() const;
         int getMisses() const;
+        double getHitRate() const;
         // Reset
         void reset();
         // Destructor
