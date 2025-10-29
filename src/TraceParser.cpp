@@ -17,3 +17,15 @@ TraceParser::~TraceParser() {
     // Close the file
     this->traceFile.close();
 }
+
+// Read Method
+bool TraceParser::readInstruction(TraceInstruction& instruction) {
+    // The return value of this function will be used in a loop
+    // It will signify if a read was successful or not from the 
+    // trace file.
+    // Instead of returning a new struct object on every read, we 
+    // are going to constantly update an already instantiated 
+    // struct objectas we are passing by reference. Tryna conserve
+    // memory here!
+    return this->traceFile.read(reinterpret_cast<char*>(&instruction), sizeof(TraceInstruction)).good();
+}

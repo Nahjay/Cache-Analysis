@@ -63,4 +63,6 @@ class TraceParser {
         TraceParser(std::string& filename);
         // Destructor
         ~TraceParser();
+        // Read Instruction Method
+        bool readInstruction(TraceInstruction& instruction);
 };
