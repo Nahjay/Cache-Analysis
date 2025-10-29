@@ -53,14 +53,20 @@ bool LRUCache::access(uint64_t address) {
             this->cacheMap.erase(frontAddress);
             // Erase the front element of the LL
             this->lruList.pop_front();
-        } else {
-            // Add to the cache if we are not at capacity
-            // First we need to create an iterator for next address we are adding
         }
 
-
-
-
+        // Add to the cache if we are not at capacity
+        
+        // Add the address to the back of the LL
+        this->lruList.push_back(address);
+        // I need to create an iterator for next address we are adding
+        // to the map. This iterator needs to be the last position aka the back
+        // of the LL. I gotta remember that .end() returns an iterator to the position
+        // 1 after the last element. Sinec I want the actual last element I need the 
+        // Previous position of the end of the list
+        auto it = std::prev(lruList.end());
+        // Insert both the address and iterator into the map
+        this->cacheMap.emplace(address, it);
         // Return false
         return false;
     }
