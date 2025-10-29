@@ -25,6 +25,12 @@ int main(int argc, char* argv[]) {
         // Increment instruction count
         instructionCount++;
 
+        // Progress every 1M instructions
+    if (instructionCount % 1000000 == 0) {
+        std::cout << "\rProcessed " << instructionCount / 1000000 
+                  << "M instructions..." << std::flush;
+    }
+
         // Extract the memory addresses from the instruction using the parser object
         std::vector<uint64_t> addresses = parser.extractAddresses(instruction);
 
