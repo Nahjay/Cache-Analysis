@@ -50,6 +50,9 @@ struct TraceInstruction {
     to line tags in the cache if they represent valid addresses (non-zero).
     */
 };
+#pragma pack(pop) 
+// Add a quick little compile time check to make sure the TraceInstruction is exactly 64 bytes
+static_assert(sizeof(TraceInstruction) == 64, "TraceInstruction must be exactly 64 bytes");
 
 // Define Trace Parser Class
 class TraceParser {
@@ -60,9 +63,11 @@ class TraceParser {
     public:
         // Public
         // Constructor
-        TraceParser(std::string& filename);
+        TraceParser(const std::string& filename);
         // Destructor
         ~TraceParser();
         // Read Instruction Method
         bool readInstruction(TraceInstruction& instruction);
+        // Extract Memory Addresses Method
+        std::vector<uint64_t> extractAddresses(const TraceInstruction& instruction);
 };
