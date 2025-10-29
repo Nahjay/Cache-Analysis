@@ -54,9 +54,13 @@ struct TraceInstruction {
 // Define Trace Parser Class
 class TraceParser {
     private:
-        // Private
-        bool is_open; // Keeps track of file status
+        // Private attributes
+        // File object for Traces
+        std::ifstream traceFile;
     public:
         // Public
+        // Constructor
         TraceParser(std::string& filename);
+        // Destructor
+        ~TraceParser();
 };
