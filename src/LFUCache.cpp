@@ -93,6 +93,12 @@ bool LFUCache::access(uint64_t address) {
             leastLL.pop_front();
             // Remove from cacheMap using this line address
             this->cacheMap.erase(addressToEvict);
+
+            // Check if we can cleanup and remove the LL
+            if (leastLL.empty()) {
+                // Erase from freqMap too
+                this->freqMap.erase(this->minFreq);
+            }
         }
 
         // If a miss has not occurred and we are not at capacity, we can add to the map :)
