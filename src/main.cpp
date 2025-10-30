@@ -2,6 +2,7 @@
 #include "LRUCache.h"
 #include "LFUCache.h"
 #include <iostream>
+#include <thread>
 
 // Defining a quick Main for Testing
 int main(int argc, char* argv[]) {
@@ -51,6 +52,7 @@ int main(int argc, char* argv[]) {
     std::cout << "Misses: " << lruCache.getMisses() << std::endl;
     std::cout << "Hit Rate: " << lruCache.getHitRate() << std::endl;
     std::cout << std::endl;
+    std::cout << "LFU stuff" << std::endl;
     std::cout << "Hits: " << lfuCache.getHits() << std::endl;
     std::cout << "Misses: " << lfuCache.getMisses() << std::endl;
     std::cout << "Hit Rate: " << lfuCache.getHitRate() << std::endl;
