@@ -55,6 +55,6 @@ int main(int argc, char* argv[]) {
     std::cout << "LFU stuff" << std::endl;
     std::cout << "Hits: " << lfuCache.getHits() << std::endl;
     std::cout << "Misses: " << lfuCache.getMisses() << std::endl;
-    std::cout << "Hit Rate: " << lfuCache.getHitRate() << std::endl;
+    std::cout << "Hit Rate: " << lfuCache.getHitRate() << std::endl; 
 
 }
