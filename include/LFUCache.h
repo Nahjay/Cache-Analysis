@@ -46,4 +46,24 @@ class LFUCache {
 
         // Constructor
         LFUCache(int capacity);
+        // Access with a specified memory address
+        bool access(uint64_t address);
+        
+        // Getters
+        
+        // Get Min
+        int getMinFreq();
+        // Get Capacity
+        int getCapacity();
+        // Get Hits
+        int getHits();
+        // Get Misses
+        int getMisses();
+        // Get Hit Rate
+        int getHiteRate();
+
+        // Reset
+        void reset();
+        // Destructor
+        ~LFUCache();
 };
