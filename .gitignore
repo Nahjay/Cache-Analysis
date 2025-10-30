@@ -2,3 +2,4 @@
 cache_simulator
 build/
 *.tmp
+.vscode
