@@ -1,5 +1,6 @@
 #include "TraceParser.h"
 #include "LRUCache.h"
+#include "LFUCache.h"
 #include <iostream>
 
 // Defining a quick Main for Testing
@@ -15,6 +16,7 @@ int main(int argc, char* argv[]) {
 
     // Create Cache objects
     LRUCache lruCache(cacheSize);
+    LFUCache lfuCache(cacheSize);
 
     // Keep track of instructions and total accesses
     int instructionCount = 0;
@@ -37,6 +39,7 @@ int main(int argc, char* argv[]) {
         // Iterate through each address extracted
         for (size_t i = 0; i < addresses.size(); i++) {
             // Access each address using the LRUCache object
+            lfuCache.access(addresses[i]);
             lruCache.access(addresses[i]);
             // Increment total acccess
             totalAccesses++;
@@ -47,5 +50,9 @@ int main(int argc, char* argv[]) {
     std::cout << "Hits: " << lruCache.getHits() << std::endl;
     std::cout << "Misses: " << lruCache.getMisses() << std::endl;
     std::cout << "Hit Rate: " << lruCache.getHitRate() << std::endl;
+    std::cout << std::endl;
+    std::cout << "Hits: " << lfuCache.getHits() << std::endl;
+    std::cout << "Misses: " << lfuCache.getMisses() << std::endl;
+    std::cout << "Hit Rate: " << lfuCache.getHitRate() << std::endl;
 
 }
