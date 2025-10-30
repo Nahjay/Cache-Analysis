@@ -38,10 +38,6 @@ clean:
 	rm -rf $(BUILD_DIR) $(TARGET)
 	@echo "Cleaned build artifacts"
 
-# Run with example (adjust path to your trace)
-run: $(TARGET)
-	./$(TARGET) trace.bin 512
-
 # Debug build
 debug: CXXFLAGS = -std=c++17 -Wall -Wextra -g -Iinclude
 debug: clean all
