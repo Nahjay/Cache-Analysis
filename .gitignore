@@ -1,3 +1,4 @@
 *.trace
 cache_simulator
 build/
+*.tmp
