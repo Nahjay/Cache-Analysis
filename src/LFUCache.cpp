@@ -8,6 +8,63 @@ LFUCache::LFUCache(int capacity) {
     this->capacity = capacity;
 }
 
+// Access the Cache by supplying a memory address
+bool LFUCache::access(uint64_t address) {
+    // Convert the memory into a viable cache line
+    uint64_t lineAddress = address >> 6;
+
+    // Check if this address is in the cache (we have a hit!)
+    if (this->cacheMap.find(lineAddress) != this->cacheMap.end()) {
+        // Address was found inside cacheMap!
+
+        // Add to hits
+        this->hits++;
+        // Get a reference to the struct for the cache line address
+        FrequencyIterator& freqIter = this->cacheMap[lineAddress];
+
+        /* Now here is the tricky part!!! I gotta first remove this cacheline
+        address from the previous frequency list it was stored in before adding
+        it to a new list since its frequency just increased (in regards to the
+        second map.)
+        */
+        // Obtain reference to List of previous frequency
+        std::list<uint64_t>& prevFreq = this->freqMap[freqIter.frequency];
+        // Remove the address in this list using the iterator for this address
+        prevFreq.erase(freqIter.iterator);
+
+        // Cleanup and remove this list from the map if its now empty after this
+        // removal to conserve space
+        if (prevFreq.empty()) {
+            // Erase the list at this frequency
+            this->freqMap.erase(freqIter.frequency);
+            // Also update minimum frequency if needed
+            if (this->minFreq == freqIter.frequency) {
+                // Increment minimum frequency
+                minFreq++;
+            }
+        }
+
+        // Update the frequency of this struct member
+        freqIter.frequency++;
+
+        // Now we need to add this address into a new frequency list
+        // Get a reference to the new frequency list
+        std::list<uint64_t>& newFreq = this->freqMap[freqIter.frequency];
+        // Add to the end of this frequency list
+        newFreq.push_back(lineAddress);
+        // Create a new iterator to update the struct to have the proper iterator
+        // for this newly updated list.
+        auto it = std::prev(newFreq.end());
+        // Update the iterator of this struct member
+        freqIter.iterator = it;
+
+        // Return true signifying the address was found in the map
+        return true;
+    } else {
+        // This was a miss
+    }
+}
+
 // Setters
 void LFUCache::setMinFreq(const int freq) {
     // Update min freq
