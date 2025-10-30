@@ -38,9 +38,13 @@ bool LFUCache::access(uint64_t address) {
             // Erase the list at this frequency
             this->freqMap.erase(freqIter.frequency);
             // Also update minimum frequency if needed
-            if (this->minFreq == freqIter.frequency) {
+            // Get minFreq
+            int minFreq = getMinFreq();
+            if (minFreq == freqIter.frequency) {
                 // Increment minimum frequency
                 minFreq++;
+                // Track the new minimum frequency
+                setMinFreq(minFreq);
             }
         }
 
@@ -74,7 +78,42 @@ bool LFUCache::access(uint64_t address) {
         // Check size of cacheMap
         if (this->cacheMap.size() >= size_t(capacity)) {
             // Time to enact the LFU eviction policy!!!
+            // Get the line address at the front of the freqMap
+            // We can index into that list correctly with the second map
+            // because we are keeping track and updating the min freq :))
+            
+            // Get reference to the LL that contains the address that has been
+            // accessed the least
+            std::list<uint64_t>& leastLL = this->freqMap[this->minFreq];
+            // Assuming this LL (frequency bucket) may have multiple values, the
+            // value to evict in question will be at the very front!
+            // Get this front value
+            uint64_t addressToEvict = leastLL.front();
+            // Remove from this LL
+            leastLL.pop_front();
+            // Remove from cacheMap using this line address
+            this->cacheMap.erase(addressToEvict);
         }
+
+        // If a miss has not occurred and we are not at capacity, we can add to the map :)
+        // Set minFreq to be 1, because we are adding a new address for the FIRST time
+        int minFreq = 1;
+        setMinFreq(minFreq);
+
+        // Add this lineAddress to the freqMap List
+        // Obtain reference to the List we need to add to
+        std::list<uint64_t>& freqList = this->freqMap[minFreq];
+        // Add to the back of this vector
+        freqList.push_back(lineAddress);
+        // Obtain iterator to point to this newly added address
+        auto it = std::prev(freqList.end());
+
+
+        // Create struct to add to cacheMap for this lineAddress
+        FrequencyIterator freqIter = {minFreq, it};
+
+        // Add this struct to the Cache Map
+        this->cacheMap[lineAddress] = freqIter;
 
         // Return false since address was not in cache
         return false;
