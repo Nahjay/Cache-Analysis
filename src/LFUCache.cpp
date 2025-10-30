@@ -61,7 +61,23 @@ bool LFUCache::access(uint64_t address) {
         // Return true signifying the address was found in the map
         return true;
     } else {
-        // This was a miss
+        // This was a miss :(((
+
+        // Add to misses
+        this->misses++;
+
+        // First check if we are at capacity, if we at capacity someone needs
+        // to get BOOTED!
+        // Get capacity
+        int capacity = getCapacity();
+
+        // Check size of cacheMap
+        if (this->cacheMap.size() >= size_t(capacity)) {
+            // Time to enact the LFU eviction policy!!!
+        }
+
+        // Return false since address was not in cache
+        return false;
     }
 }
 
