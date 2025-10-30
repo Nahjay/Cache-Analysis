@@ -40,7 +40,7 @@ class LFUCache {
         int misses = 0;
         int capacity;
         // Keep track of what is the lowest frequency value in the map
-        int min_freq;
+        int minFreq;
     public:
         // Public interface
 
@@ -48,19 +48,21 @@ class LFUCache {
         LFUCache(int capacity);
         // Access with a specified memory address
         bool access(uint64_t address);
+
+        // Setters
+        void setMinFreq(const int freq);
         
         // Getters
-        
         // Get Min
-        int getMinFreq();
+        int getMinFreq() const;
         // Get Capacity
-        int getCapacity();
+        int getCapacity() const;
         // Get Hits
-        int getHits();
+        int getHits() const;
         // Get Misses
-        int getMisses();
+        int getMisses() const;
         // Get Hit Rate
-        int getHiteRate();
+        double getHitRate() const;
 
         // Reset
         void reset();
