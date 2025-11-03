@@ -4,6 +4,24 @@
 #include <iostream>
 #include <thread>
 
+
+
+void printHeader(){
+
+    //Creating the Header
+    std::cout << "============================================================" << std::endl;
+    std::cout << "                 Welcome to Cache Simulator  " << std::endl;
+    std::cout << "============================================================" << std::endl;
+    std::cout << " We are simulating memory access patterns with LRU and LFU caching!" << std::endl;
+    std::cout << "-------------------------------------------------------------------" << std::endl;
+    
+    //This is the main menu where we the user would choose what they want to do.
+    std::cout << "Main Menu:" << std::endl;
+    std::cout << "1.Run Cache simulation" << std::endl;
+    std::cout << "2.View previous simulation results" << std::endl;
+    std::cout << "3.Exit" << std::endl;
+}
+
 // Defining a quick Main for Testing
 int main(int argc, char* argv[]) {
     // Get the string representing the filename
