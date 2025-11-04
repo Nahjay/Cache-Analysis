@@ -4,23 +4,38 @@
 #include <iostream>
 #include <thread>
 
-
-
-void printHeader(){
-
-    //Creating the Header
-    std::cout << "============================================================" << std::endl;
-    std::cout << "                 Welcome to Cache Simulator  " << std::endl;
-    std::cout << "============================================================" << std::endl;
-    std::cout << " We are simulating memory access patterns with LRU and LFU caching!" << std::endl;
-    std::cout << "-------------------------------------------------------------------" << std::endl;
-    
-    //This is the main menu where we the user would choose what they want to do.
-    std::cout << "Main Menu:" << std::endl;
-    std::cout << "1.Run Cache simulation" << std::endl;
-    std::cout << "2.View previous simulation results" << std::endl;
-    std::cout << "3.Exit" << std::endl;
+void printResults(const std::string& name, int hits, int misses, double hitRate, std::ostream& out) {
+    out << "[" << name << " Cache Results] \n";
+    out << "Hits:      " << hits << "\n";
+    out << "Misses:    " << misses << "\n";
+    out << "Hit Rate:  " << std::fixed << std::setprecision(4);
+        << hitRate * 100 << "%\n\n";
 }
+
+void saveResultsToFile (const std::string& filename, const std::string& tracefile, int cacheSize,  int mode, const LRUCache& lru, const LFUCache& lfu) {
+    ensurePreviousRunsDir();
+    std::string path = "previous_runs/" + filename + ".txt";
+    std::ofstream out(path);
+    if (!out.is_open()) {
+        std::cerr << "Error: could not save results to file. \n";
+        return;
+    }
+    out << "Simulation Name: " << filename << "\n";
+    out << "Trace file: " << tracefile << "\n";
+    out << "Cache Size " << cacheSize << "lines\n";
+    out << "Cache Mode " << (mode == 1 ? "LRU": mode == 2 ? "LFU": "LRU + LFU") << "\n\n";
+    out << "=================== Simulation Results ==================\n\n";
+    
+    if (mode == 1 || mode == 3) {
+        printResults("LRU, lru.getHits(), lru.getMisses(), lru.getHitRate(), out");
+    }
+    if (mode == 2 || mode == 3) {
+        printResults("LFU, lfu.getHits(), lfu.getMisses(), lfu.getHitRate(), out");
+    }
+    out.close();
+}
+
+
 
 // Defining a quick Main for Testing
 int main(int argc, char* argv[]) {
@@ -73,6 +88,6 @@ int main(int argc, char* argv[]) {
     std::cout << "LFU stuff" << std::endl;
     std::cout << "Hits: " << lfuCache.getHits() << std::endl;
     std::cout << "Misses: " << lfuCache.getMisses() << std::endl;
-    std::cout << "Hit Rate: " << lfuCache.getHitRate() << std::endl; 
+    std::cout << "Hit Rate: " << lfuCache.getHitRate() << std::endl;
 
 }
