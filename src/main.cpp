@@ -248,18 +248,18 @@ int main() {
         int option = std::stoi(mainMenu);//Putting the input that was picked as an option and turn it into a integer
 
         if(option == 1){//if input is 1
-            std::cout << "------------------------------------------------------------" << std::endl;
-            std::cout << "Please enter a name for this simulation(No Spaces or dashes!!)" << std::endl;
+            // std::cout << "------------------------------------------------------------" << std::endl;
+            // std::cout << "Please enter a name for this simulation(No Spaces or dashes!!)" << std::endl;
 
-            std::string filename;
-            std::cin >> filename;
+            // std::string filename;
+            // std::cin >> filename;
 
-            if(!validData(filename)){//if the filename is not valid Try again 
+            // if(!validData(filename)){//if the filename is not valid Try again 
                 
-                std::cout << "Error!" << std::endl;
-                std::cout << "Try Again! No Spaces! No dashes!" << std::endl;
-                continue;
-            }
+            //     std::cout << "Error!" << std::endl;
+            //     std::cout << "Try Again! No Spaces! No dashes!" << std::endl;
+            //     continue;
+            // }
 
             runSimulation();//If everything is right run the simulation
         }
