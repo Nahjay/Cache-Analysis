@@ -72,7 +72,32 @@ void runSimulation() {
     }
     std::cout << "------------------------------------------------------\n";
 
-    
+    TraceParser parser(filename);
+    TraceInstruction instruction;
+    LRUCache lruCache(cacheSize);
+    LFUCache lfuCache(cacheSize);
+
+    int instructionCount = 0;
+    while (parser.readInstruction(instruction)) {
+        instructionCount++;
+        if (instructionCount & 1000000 == 0) {
+            std::cout << "\rProcessed " << instructionCount / 1000000
+                      << "M instructions..." << std::flush;
+        for (auto addr : parser.extractAddresses(instruction)) {
+            if (mode == 1) {
+                lruCache.access(addr);
+            }
+            else if (mode == 2) {
+                lfuCache.access(addr);
+            }
+            else {
+                 lruCache.access(addr);
+                 lfuCache.access(addr);
+            }
+        }
+      }
+    }
+
 }
 
 
