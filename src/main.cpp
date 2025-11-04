@@ -53,8 +53,18 @@ void listPreviousRuns(){
     for(const auto& entry: fs::directory_iterator("previous_runs")){//go through the previous runs directory
 
         if(entry.is_regular_file()){
-            files.push_back(entry.path().filename().string());//if the file is a regular file then push back 
+            files.push_back(entry.path().filename().string());//if the file is a regular file then push it into the files vector 
+            
+            //A regular file is a standard file that contains data, as opposed to other file types 
+            // like directories, symbolic links, block devices, or character devices.
         }
+
+        if(files.empty()){
+            std::cout << "No previous simulations found!" << std::endl;
+            return;
+        }
+
+
 
 
     }
