@@ -3,13 +3,13 @@
 #include "LFUCache.h"
 #include <iostream>
 #include <thread>
-#include <experimental/filesystem>
+#include <filesystem>
 #include <regex>
 #include <vector>
 #include <fstream>
 #include <limits>
 #include <iomanip>
-namespace fs = std::experimental::filesystem;
+namespace fs = std::filesystem;
 
 void printResults(const std::string& name, int hits, int misses, double hitRate, std::ostream& out) {
     out << "[" << name << " Cache Results] \n";

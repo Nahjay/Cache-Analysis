@@ -16,9 +16,9 @@ else
     DETECT_GCC_VER = $(shell expr `$(CXX) -dumpversion | cut -f1 -d.` \< 9)
 endif
 
-# Link filesystem library if using old GCC
+# Link filesystem library if using GCC < 9
 ifeq ($(DETECT_GCC_VER),1)
-    LDFLAGS += -lstdc++fs
+    LDFLAGS = -lstdc++fs
 endif
 
 # Directories
@@ -38,9 +38,9 @@ all: $(BUILD_DIR) $(TARGET)
 $(BUILD_DIR):
 	$(MKDIR) $(BUILD_DIR)
 
-# Link object files
+# Link object files (LDFLAGS now comes AFTER object files)
 $(TARGET): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 	@echo "✅ Build complete: $(TARGET)"
 
 # Compile source files
