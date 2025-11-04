@@ -6,6 +6,8 @@
 #include <experimental/filesystem>
 #include <regex>
 #include <vector>
+#include <fstream>
+#include <limits>
 namespace fs = std::experimental::filesystem;
 
 void ensurePreviousRunsDir() {
