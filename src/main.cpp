@@ -112,6 +112,16 @@ void runSimulation() {
         }
       }
     }
+    std::cout << "Simulation complete \n\n";
+    std::cout << "=================== Simulation Results ==================\n\n";
+    if (mode == 1 || mode == 3) {
+        printResults("LRU", lru.getHits(), lru.getMisses(), lru.getHitRate(), std::cout);
+    }
+    if (mode == 2 || mode == 3) {
+        printResults("LFU", lfu.getHits(), lfu.getMisses(), lfu.getHitRate(), std::cout);
+    }
+    saveResultsToFile(runName, filename, cacheSize, mode, lruCache, lfuCache);
+    std::cout << "Results has been saved to:\n previous_runs/" << runName << ".txt\n\n";
 
 }
 
