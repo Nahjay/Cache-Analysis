@@ -53,8 +53,9 @@ void listPreviousRuns(){
     for(const auto& entry: fs::directory_iterator("previous_runs")){//go through the previous runs directory
 
         if(entry.is_regular_file()){
-            files.push_back(entry.path().filename().string());//if 
+            files.push_back(entry.path().filename().string());//if the file is a regular file then push back 
         }
+
 
     }
     return;
@@ -89,7 +90,7 @@ int main() {
             runsimulation();//If everything is right run the simulation
         }
         else if(option == 2){
-            
+            listPreviousRuns();
         }
         else if(option == 3){//if input is 3 then exit
             break;//Exit
