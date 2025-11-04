@@ -61,7 +61,18 @@ void runSimulation() {
     std::cout << "Trace File: " << tracefile << "\n";
     std::cout << "Cache Size: " << cacheSize << " lines\n";
     std::cout << "Simulation mode: ";
+    if (mode == 1) {
+        std::cout << "LRU Only\n";
+    }
+    else if (mode == 2) {
+        std::cout << "LFU Only\n";
+    }
+    else {
+        std::cout << "LRU + LFU\n";
+    }
+    std::cout << "------------------------------------------------------\n";
 
+    
 }
 
 
