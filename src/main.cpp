@@ -47,10 +47,14 @@ bool validData(std::string filename){//Function for filename
 }
 
 void listPreviousRuns(){
-    ensurePreviousRunsDir();
+    ensurePreviousRunsDir();//ensuring that if there isn't a previous runs directory make new directory
     std::vector<std::string> files;
 
-    for(const auto& entry: fs::directory::){
+    for(const auto& entry: fs::directory_iterator("previous_runs")){//go through the previous runs directory
+
+        if(entry.is_regular_file()){
+            files.push_back(entry.path().filename().string());//if 
+        }
 
     }
     return;
