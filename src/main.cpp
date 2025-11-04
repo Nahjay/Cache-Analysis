@@ -35,6 +35,26 @@ void saveResultsToFile (const std::string& filename, const std::string& tracefil
     out.close();
 }
 
+void runSimulation() {
+    std::string filename;
+    std::string runName;
+    int cacheSize;
+    int mode;
+
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), "\n");
+    std::cout << "\nPlease enter the path to your .trace file:\n> ";
+    std::getline(std::cin, filename);
+
+    std::cout << "\nEnter the cache size (in number of lines/blocks):\n> ";
+    std::cin >> cacheSize;
+
+    std::cout << "\nChoose cache type to simulate\n";
+    std::cout << "LRU Cache\n";
+    std::cout << "LFU Cache\n";
+    std::cout << 
+
+}
+
 
 
 // Defining a quick Main for Testing
