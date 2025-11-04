@@ -7,6 +7,7 @@
 #include <fstream>
 #include <limits>
 #include <iomanip>
+#include <thread>
 
 namespace fs = std::filesystem;
 
@@ -154,22 +155,61 @@ void runSimulation() {
     LRUCache lruCache(cacheSize);
     LFUCache lfuCache(cacheSize);
 
-    int instructionCount = 0;
-    while (parser.readInstruction(instruction)) {
-        instructionCount++;
-        if (instructionCount % 1000000 == 0) {
-            std::cout << "\rProcessed " << instructionCount / 1000000
-                    << "M instructions..." << std::flush;
+    // If mode == 3, use threads
+    if (mode == 3) {
+        // Parse trace and collect all addresses first
+        std::vector<uint64_t> allAddresses;
+        int instructionCount = 0;
+        
+        std::cout << "Parsing trace file...\n";
+        while (parser.readInstruction(instruction)) {
+            instructionCount++;
+            if (instructionCount % 1000000 == 0) {
+                // Output format same as processing instructions
+                std::cout << "\rParsed " << instructionCount / 1000000
+                        << "M instructions..." << std::flush;
+            }
+            // Push to address vector
+            for (auto addr : parser.extractAddresses(instruction)) {
+                allAddresses.push_back(addr);
+            }
         }
+        std::cout << "\nParsing complete. Running caches in parallel...\n";
+        // fun part!!
+        
+        // Create two threads to process independently
+        std::thread lruThread([&lruCache, &allAddresses]() {
+            for (auto addr : allAddresses) {
+                lruCache.access(addr);
+            }
+        });
+        
+        std::thread lfuThread([&lfuCache, &allAddresses]() {
+            for (auto addr : allAddresses) {
+                lfuCache.access(addr);
+            }
+        });
+        
+        // Wait for both threads to finish
+        lruThread.join();
+        lfuThread.join();
+        
+    } else {
+        // Can run in single thread if we just running an individual cache
+        int instructionCount = 0;
+        while (parser.readInstruction(instruction)) {
+            instructionCount++;
+            if (instructionCount % 1000000 == 0) {
+                std::cout << "\rProcessed " << instructionCount / 1000000
+                        << "M instructions..." << std::flush;
+            }
 
-        for (auto addr : parser.extractAddresses(instruction)) {
-            if (mode == 1) {
-                lruCache.access(addr);
-            } else if (mode == 2) {
-                lfuCache.access(addr);
-            } else {
-                lruCache.access(addr);
-                lfuCache.access(addr);
+            for (auto addr : parser.extractAddresses(instruction)) {
+                if (mode == 1) {
+                    lruCache.access(addr);
+                } else if (mode == 2) {
+                    lfuCache.access(addr);
+                }
             }
         }
     }
