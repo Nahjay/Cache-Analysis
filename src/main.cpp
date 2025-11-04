@@ -48,7 +48,7 @@ void listPreviousRuns(){
 
     for(const auto& entry: fs::directory_iterator("previous_runs")){//go through the previous runs directory
 
-        if(entry.is_regular_file()){
+        if(fs::is_regular_file(entry)){
             files.push_back(entry.path().filename().string());//if the file is a regular file then push it into the files vector 
             
             //A regular file is a standard file that contains data, as opposed to other file types 
@@ -130,7 +130,7 @@ int main() {
                 continue;
             }
 
-            runsimulation();//If everything is right run the simulation
+            runSimulation();//If everything is right run the simulation
         }
         else if(option == 2){
             listPreviousRuns();
