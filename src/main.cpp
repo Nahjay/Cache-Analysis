@@ -5,6 +5,7 @@
 #include <thread>
 #include <experimental/filesystem>
 #include <regex>
+#include <vector>
 namespace fs = std::experimental::filesystem;
 
 void ensurePreviousRunsDir() {
@@ -35,7 +36,7 @@ void printHeader(){
 }
 
 
-bool noSpaces(std::string filename){//Function for filename
+bool validData(std::string filename){//Function for filename
 
     //creating regex obj that requires that filename have only alphabetical letters and underscores
     std::regex obj("^[a-zA-Z0-9_]+$");
@@ -46,6 +47,12 @@ bool noSpaces(std::string filename){//Function for filename
 }
 
 void listPreviousRuns(){
+    ensurePreviousRunsDir();
+    std::vector<std::string> files;
+
+    for(const auto& entry: fs::directory::){
+
+    }
     return;
 }
 
@@ -59,25 +66,29 @@ int main() {
     while(true){
 
         std::getline(std::cin, mainMenu);
-        int mainInput = std::stoi(mainMenu);//Putting the input that was picked as an option and turn it into a integer
+        int option = std::stoi(mainMenu);//Putting the input that was picked as an option and turn it into a integer
 
-        if(mainInput == 1){//if input is 1
+        if(option == 1){//if input is 1
             std::cout << "------------------------------------------------------------" << std::endl;
             std::cout << "Please enter a name for this simulation(No Spaces or dashes!!)" << std::endl;
 
             std::string filename;
             std::cin >> filename;
 
-            if(!noSpaces(filename)){
+            if(!validData(filename)){//if the filename is not valid Try again 
                 
                 std::cout << "Error!" << std::endl;
                 std::cout << "Try Again! No Spaces! No dashes!" << std::endl;
                 continue;
             }
 
+            runsimulation();//If everything is right run the simulation
         }
-        else if(mainInput == 3){//kif input is 3 then exit
-            return 0; 
+        else if(option == 2){
+            
+        }
+        else if(option == 3){//if input is 3 then exit
+            break;//Exit
         }
     }
 
@@ -135,5 +146,7 @@ int main() {
     // std::cout << "Hits: " << lfuCache.getHits() << std::endl;
     // std::cout << "Misses: " << lfuCache.getMisses() << std::endl;
     // std::cout << "Hit Rate: " << lfuCache.getHitRate() << std::endl; 
+
+    return 0;
 
 }
