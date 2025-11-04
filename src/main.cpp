@@ -1,60 +1,51 @@
-#include "TraceParser.h"
-#include "LRUCache.h"
-#include "LFUCache.h"
+#include "MenuUtils.h"
 #include <iostream>
-#include <thread>
+#include <limits>
 
-// Defining a quick Main for Testing
-int main(int argc, char* argv[]) {
-    // Get the string representing the filename
-    std::string filename = argv[1];
-    // Get the cacheSize
-    int cacheSize = std::atoi(argv[2]);
-    // Use the filename to create a traceparser object
-    TraceParser parser = TraceParser(filename);
-    // Create a TraceInstruction struct to parse/read each instruction into
-    TraceInstruction instruction;
+// Completing Main
+int main() {
+    // Print Initial Header
+    printHeader();
+    // Check if the user already has some stored results
+    ensurePreviousRunsDir();
 
-    // Create Cache objects
-    LRUCache lruCache(cacheSize);
-    LFUCache lfuCache(cacheSize);
+    std::string mainMenu;
 
-    // Keep track of instructions and total accesses
-    int instructionCount = 0;
-    int totalAccesses = 0;
+    while(true){
+        std::cout << "Main Menu:" << std::endl;
+        std::cout << "1. Run Cache simulation" << std::endl;
+        std::cout << "2. View previous simulation results" << std::endl;
+        std::cout << "3. Exit" << std::endl;
+        std::cout << "> ";
 
-    // Iterate and parse
-    while(parser.readInstruction(instruction)) {
-        // Increment instruction count
-        instructionCount++;
+        std::getline(std::cin, mainMenu);
 
-        // Progress every 1M instructions
-    if (instructionCount % 1000000 == 0) {
-        std::cout << "\rProcessed " << instructionCount / 1000000 
-                  << "M instructions..." << std::flush;
-    }
+        int option;
+        try {
+            option = std::stoi(mainMenu);
+        } catch (const std::exception&) {
+            std::cout << "Invalid input. Please enter 1, 2, or 3.\n\n";
+            continue;
+        }
 
-        // Extract the memory addresses from the instruction using the parser object
-        std::vector<uint64_t> addresses = parser.extractAddresses(instruction);
+        if (option < 1 || option > 3) {
+            std::cout << "Invalid option. Please enter 1, 2, or 3.\n\n";
+            continue;
+        }
 
-        // Iterate through each address extracted
-        for (size_t i = 0; i < addresses.size(); i++) {
-            // Access each address using the LRUCache object
-            lfuCache.access(addresses[i]);
-            lruCache.access(addresses[i]);
-            // Increment total acccess
-            totalAccesses++;
+        if(option == 1){
+            runSimulation();
+        }
+        else if(option == 2){
+            listPreviousRuns();
+        }
+        else if(option == 3){
+            std::cout << std::endl;
+            std::cout << "Exiting Cache Simulator. Goodbye!\n";
+            break;
         }
     }
 
-    // When done print results
-    std::cout << "Hits: " << lruCache.getHits() << std::endl;
-    std::cout << "Misses: " << lruCache.getMisses() << std::endl;
-    std::cout << "Hit Rate: " << lruCache.getHitRate() << std::endl;
-    std::cout << std::endl;
-    std::cout << "LFU stuff" << std::endl;
-    std::cout << "Hits: " << lfuCache.getHits() << std::endl;
-    std::cout << "Misses: " << lfuCache.getMisses() << std::endl;
-    std::cout << "Hit Rate: " << lfuCache.getHitRate() << std::endl;
-
+    return 0;
 }
+

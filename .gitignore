@@ -4,3 +4,4 @@ build/
 *.tmp
 .vscode
 cache_simulator_laptop
+previous_runs/
