@@ -49,9 +49,18 @@ void runSimulation() {
     std::cin >> cacheSize;
 
     std::cout << "\nChoose cache type to simulate\n";
-    std::cout << "LRU Cache\n";
-    std::cout << "LFU Cache\n";
-    std::cout << 
+    std::cout << "1. LRU Cache\n";
+    std::cout << "2. LFU Cache\n";
+    std::cout << "3. Both\n> ";
+    std::cin >> mode;
+
+    std::cout << "\n----------------------------------------------------------\n";
+    std::cout << "Starting simulation...\n";
+    std::cout << "\n---------------------------------------------------------\n";
+    std::cout << "Run Name: " << runName << "\n";
+    std::cout << "Trace File: " << tracefile << "\n";
+    std::cout << "Cache Size: " << cacheSize << " lines\n";
+    std::cout << "Simulation mode: ";
 
 }
 
