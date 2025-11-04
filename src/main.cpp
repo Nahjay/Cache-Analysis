@@ -42,6 +42,21 @@ void runSimulation() {
     int mode;
 
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), "\n");
+    std::cout << "Please enter the name for this simulation (no spaces):\n> ";
+    std::getline(std::cin, runName);
+    std::string path = "previous_runs/" + runName + ".txt";
+    if (fs::exists(path)) {
+        std::cout << "A simulation with that name already exists.\n";
+        std::cout << "Would you like to overwrite it (y/n): ";
+        char answer;
+        std::cin >> answer;
+        if (answer != 'y' && answer != 'Y') {
+            std::cout << "Simulation cancelled.\n";
+            return;
+        }
+    }
+
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), "\n");
     std::cout << "\nPlease enter the path to your .trace file:\n> ";
     std::getline(std::cin, filename);
 
