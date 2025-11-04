@@ -21,13 +21,14 @@ void printResults(const std::string& name, int hits, int misses, double hitRate,
 
 bool ensurePreviousRunsDir() {
     if (!fs::exists("previous_runs")) {
-        fs::create_directory("previous_runs");
-        return false;
-    } else {
-        std::cout << std::endl;
-        std::cout << "'previous_runs' directory already exists." << std::endl;
-        return true;
+        try {
+            fs::create_directory("previous_runs");
+        } catch (const std::exception& e) {
+            std::cerr << "Error: Could not create results directory.\n";
+            return false;
+        }
     }
+    return true;
 }
 
 bool validData(const std::string& filename){//Function for filename
@@ -71,6 +72,7 @@ void runSimulation() {
 
     // Get simulation name with validation
     while (true) {
+        std::cout << std::endl;
         std::cout << "Please enter a name for this simulation (alphanumeric and underscores only):\n> ";
         std::getline(std::cin, runName);
         
@@ -109,6 +111,7 @@ void runSimulation() {
     if (!fs::exists(filename)) {
         std::cout << std::endl;
         std::cerr << "Error: Trace file does not exist.\n";
+        std::cout << std::endl;
         return;
     }
 
@@ -260,6 +263,7 @@ void listPreviousRuns(){
     }
 
     //Making header for results
+    std::cout << std::endl;
     std::cout << "============================================================" << std::endl;
     std::cout << "            Previous Simulation Results" << std::endl;
     std::cout << "============================================================" << std::endl;
@@ -284,6 +288,7 @@ void listPreviousRuns(){
         std::ifstream in(filepath);// This opens the chosen file for reading.
 
         if (in.is_open()) {//if the file is able to be opened than print its results
+            std::cout << std::endl;
             std::cout << "------------------------------------------------------------\n";
             std::cout << "Showing results from: " << files[choice - 1] << "\n";
             std::cout << "------------------------------------------------------------\n";
