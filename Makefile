@@ -1,9 +1,23 @@
+# Compiler settings
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -O3 -Iinclude
 LDFLAGS = 
 
-# If using GCC older than 9, link stdc++fs for filesystem
-ifeq ($(shell expr `$(CXX) -dumpversion | cut -f1 -d.` \< 9),1)
+# Detect platform
+ifeq ($(OS),Windows_NT)
+    RM = rmdir /S /Q
+    MKDIR = mkdir
+    SEP = \\
+    DETECT_GCC_VER = 0
+else
+    RM = rm -rf
+    MKDIR = mkdir -p
+    SEP = /
+    DETECT_GCC_VER = $(shell expr `$(CXX) -dumpversion | cut -f1 -d.` \< 9)
+endif
+
+# Link filesystem library if using old GCC
+ifeq ($(DETECT_GCC_VER),1)
     LDFLAGS += -lstdc++fs
 endif
 
@@ -13,26 +27,21 @@ INC_DIR = include
 BUILD_DIR = build
 TARGET = cache_simulator
 
-# Source files
-SOURCES = $(SRC_DIR)/main.cpp \
-          $(SRC_DIR)/TraceParser.cpp \
-          $(SRC_DIR)/LRUCache.cpp \
-          $(SRC_DIR)/LFUCache.cpp
-
-# Object files
-OBJECTS = $(SOURCES:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
+# Automatically detect all .cpp files in src/
+SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
+OBJECTS = $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SOURCES))
 
 # Default target
 all: $(BUILD_DIR) $(TARGET)
 
 # Create build directory
 $(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+	$(MKDIR) $(BUILD_DIR)
 
 # Link object files
 $(TARGET): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
-	@echo "Build complete: $(TARGET)"
+	@echo "✅ Build complete: $(TARGET)"
 
 # Compile source files
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -40,8 +49,9 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 
 # Clean build artifacts
 clean:
-	rm -rf $(BUILD_DIR) $(TARGET)
-	@echo "Cleaned build artifacts"
+	-$(RM) $(BUILD_DIR)
+	-$(RM) $(TARGET)
+	@echo "🧹 Cleaned build artifacts"
 
 # Debug build
 debug: CXXFLAGS = -std=c++17 -Wall -Wextra -g -Iinclude
