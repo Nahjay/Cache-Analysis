@@ -59,11 +59,22 @@ void listPreviousRuns(){
             // like directories, symbolic links, block devices, or character devices.
         }
 
-        if(files.empty()){
+        if(files.empty()){//if the vector of files is empty then print no simulations found
             std::cout << "No previous simulations found!" << std::endl;
             return;
         }
 
+        //Making header for results
+        std::cout << "============================================================" << std::endl;
+        std::cout << "            Previous Simulation Results" << std::endl;
+        std::cout << "============================================================" << std::endl;
+        
+
+        for(std::size_t = 0; i < files.size(); i++){
+            std::cout << i + 1 << ". " << files[i] << std::endl;
+            //ex. 1. FILE_NAMEEE 
+            //Printing all the previous files
+        }
 
 
 
