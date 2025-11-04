@@ -26,12 +26,6 @@ void printHeader(){
     std::cout << "============================================================" << std::endl;
     std::cout << " We are simulating memory access patterns with LRU and LFU caching!" << std::endl;
     std::cout << "-------------------------------------------------------------------" << std::endl;
-    
-    //This is the main menu where we the user would choose what they want to do.
-    std::cout << "Main Menu:" << std::endl;
-    std::cout << "1.Run Cache simulation" << std::endl;
-    std::cout << "2.View previous simulation results" << std::endl;
-    std::cout << "3.Exit" << std::endl;
 
 }
 
@@ -71,31 +65,32 @@ void listPreviousRuns(){
     std::cout << "============================================================" << std::endl;
     
 
-    for(std::size_t = 0; i < files.size(); i++){
+    for(std::size_t i = 0; i < files.size(); i++){
         std::cout << i + 1 << ". " << files[i] << std::endl;
         //ex. 1. FILE_NAMEEE 
         //Printing all the previous files
     }
 
-    std::cout << files.size() + 1 << ". Back to main menu" std::endl;
+    std::cout << files.size() + 1 << ". Back to main menu" << std::endl;
      //After Listing all previous files give option to go back to main menu
     
     int choice;
     std::cin >> choice;
-    // std::cin.ignore();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//clears the newline
 
     if (choice > 0 && choice <= (int)files.size()) {//check if the choice number is a valid number
 
-        std::string filepath = "previous_runs/" + files[choice - 1];
-        std::ifstream in(filepath);
-        if (in.is_open()) {
+        std::string filepath = "previous_runs/" + files[choice - 1]; //the full path to the selected file.
+        std::ifstream in(filepath);// This opens the chosen file for reading.
+
+        if (in.is_open()) {//if the file is able to be opened than print its results
             std::cout << "------------------------------------------------------------\n";
             std::cout << "Showing results from: " << files[choice - 1] << "\n";
             std::cout << "------------------------------------------------------------\n";
-            std::cout << in.rdbuf();//readbuffer
+            std::cout << in.rdbuf();//read everything in the file (in) and basically output everything inside
             std::cout << "------------------------------------------------------------\n";
             std::cout << "Press Enter to return to the main menu...";
-            std::cin.get();
+            std::cin.get();//This essentially waits for user to press enter and go back to main menu
         }
     }
     
@@ -110,6 +105,11 @@ int main() {
     std::string mainMenu;//made an string for getline for the user to pick an option in the main menu
 
     while(true){
+        //This is the main menu where we the user would choose what they want to do.
+        std::cout << "Main Menu:" << std::endl;
+        std::cout << "1.Run Cache simulation" << std::endl;
+        std::cout << "2.View previous simulation results" << std::endl;
+        std::cout << "3.Exit" << std::endl;
 
         std::getline(std::cin, mainMenu);
         int option = std::stoi(mainMenu);//Putting the input that was picked as an option and turn it into a integer
@@ -139,59 +139,6 @@ int main() {
     }
 
 
-
-
-
-    // // Get the string representing the filename
-    // std::string filename = argv[1];
-    // // Get the cacheSize
-    // int cacheSize = std::atoi(argv[2]);
-    // // Use the filename to create a traceparser object
-    // TraceParser parser = TraceParser(filename);
-    // // Create a TraceInstruction struct to parse/read each instruction into
-    // TraceInstruction instruction;
-
-    // // Create Cache objects
-    // LRUCache lruCache(cacheSize);
-    // LFUCache lfuCache(cacheSize);
-
-    // // Keep track of instructions and total accesses
-    // int instructionCount = 0;
-    // int totalAccesses = 0;
-
-    // // Iterate and parse
-    // while(parser.readInstruction(instruction)) {
-    //     // Increment instruction count
-    //     instructionCount++;
-
-    //     // Progress every 1M instructions
-    // if (instructionCount % 1000000 == 0) {
-    //     std::cout << "\rProcessed " << instructionCount / 1000000 
-    //               << "M instructions..." << std::flush;
-    // }
-
-    //     // Extract the memory addresses from the instruction using the parser object
-    //     std::vector<uint64_t> addresses = parser.extractAddresses(instruction);
-
-    //     // Iterate through each address extracted
-    //     for (size_t i = 0; i < addresses.size(); i++) {
-    //         // Access each address using the LRUCache object
-    //         lfuCache.access(addresses[i]);
-    //         lruCache.access(addresses[i]);
-    //         // Increment total acccess
-    //         totalAccesses++;
-    //     }
-    // }
-
-    // // When done print results
-    // std::cout << "Hits: " << lruCache.getHits() << std::endl;
-    // std::cout << "Misses: " << lruCache.getMisses() << std::endl;
-    // std::cout << "Hit Rate: " << lruCache.getHitRate() << std::endl;
-    // std::cout << std::endl;
-    // std::cout << "LFU stuff" << std::endl;
-    // std::cout << "Hits: " << lfuCache.getHits() << std::endl;
-    // std::cout << "Misses: " << lfuCache.getMisses() << std::endl;
-    // std::cout << "Hit Rate: " << lfuCache.getHitRate() << std::endl; 
 
     return 0;
 
